@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Market.Models.Category>
+@{
+    ViewBag.Title = "爱逛";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main">
+    <div class="ad">
+        <img src="~/Content/img/@ViewBag.banner" id="banner" />
+        <script>document.getElementById("banner").onerror = function () { this.src = "/content/img/banner1.png" }</script>
+    </div>
+</div>
+    <ul class="kindlist">
+        @foreach (var item in Model) {
+        <a href="/market/list?id=@item.CategoryID"><li>
+            <i><img src="~/Content/category/@item.PicURL" /></i>
+            @item.Name
+        </li></a>
+        }
+    </ul>
+
+

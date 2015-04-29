@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "开始!我的爱逛";
+}
+<div class="login-logo">
+    <i class="icon-bag"></i>爱逛
+</div>
+@using (Html.BeginForm())
+{
+    <div class="loginbox">
+        <div class="pass-info"><input type="text" id="UserID" name="UserID" placeholder="用户名" /></div>
+        <div class="pass-info"><input type="password" id="Password" name="Password" placeholder="密码" /></div>
+        <div class="btnbox">
+            <input class="btn" id="sub" type="button" value="登录" />
+            
+        </div>
+        <div style="margin-top:30px;text-align:right;color:#888;cursor:pointer"><a id="register">>>快速注册</a></div>
+        <script>
+            document.getElementById("register").onclick = function () {
+                var url = getQueryString("returnurl");
+                if (url == null)
+                    window.location.href = "/market/register";
+                else {
+                    window.location.href = "/market/register?returnurl=" + url;
+                }
+            }
+
+        </script>
+    </div>
+}
+<script>
+    var userid = document.getElementById("UserID");
+    var pass = document.getElementById("Password");
+    userid.onblur = function () {
+        if (this.value == "") {
+            this.className = "error";
+        }
+        else this.className = "";
+    };
+    pass.onblur = function () {
+        if (this.value == "") {
+            this.className = "error";
+        }
+        else this.className = "";
+    };
+    document.getElementById("sub").onclick = function () {
+        if (userid.value == "") {
+            userid.focus(); return 0;
+        } else if (pass.value == "") {
+            pass.focus(); return 0;
+        }
+        $.ajax({
+            url: "/market/Login",
+            type: "POST",
+            dataType: "json",
+            data: "UserID=" + userid.value + '&Password=' + pass.value,
+            success: function (data) {
+                if (data == 1) {
+                    //document.getElementsByTagName("form")[0].submit();
+                    var url = getQueryString("returnurl");
+                    if (url == null)
+                        window.location.href = "/market/center";
+                    else window.location.href = url;
+                }else if(data == 2){
+                    messagebox("密码错误");
+                    pass.focus();
+                }
+                else {
+                    confirmbox("还没注册吧", function () {
+                        var url = getQueryString("returnurl");
+                        if (url == null)
+                            window.location.href = "/market/register";
+                        else {
+                            window.location.href = "/market/register?returnurl=" + url;
+                        }
+                    });
+                }
+            },
+            timeout: 10000,
+            error: function (data) {
+                alert("请求超时")
+            }
+
+        })
+    }
+    //获取参数
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null)
+            return unescape(r[2]);
+        return null;
+    }
+</script>

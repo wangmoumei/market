@@ -1,0 +1,64 @@
+﻿@model Market.Models.Category
+
+@{
+    ViewBag.Title = "添加类别";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="cat-new">
+    <input type="file" name="file" id="file" style="display:none" />
+    <div class="cat-img" id="cat-img">
+        <div id="uploading"><i class="icon-plus"></i></div>
+    </div>
+    <div class="cat-name">
+        @using (Html.BeginForm()) {
+            <input type="text" id="Name" name="Name" placeholder="类别名" />
+            <input type="text" id="PicURL" name="PicURL" style="display:none"/>
+        }
+    </div>
+</div>
+
+<div class="cat-subbox">
+    <a class="cat-sub" onclick="subform()">添加</a>
+</div>
+<script>
+    $("#loading").ajaxStart(function () {
+        $(this).show();
+    }).ajaxComplete(function () {
+        $(this).hide();
+    });
+    document.getElementById("cat-img").onclick = function () {
+        document.getElementById("file").click();
+    }
+    document.getElementById("file").onchange = function () {
+        //document.getElementById("file1").click();
+        $.ajaxFileUpload({
+            url: '/admin/categoryimg',//后台处理的action
+            secureuri: false,
+            fileElementId: 'file',//上传的控件名
+            dataType: 'text',
+            success: function (data, status) {
+                var group = data.split(",");
+                if (group[0]) {
+                    $("#cat-img").html('<img src="/Content/category/' + group[1] + '" />');
+                    $("#PicURL").val(group[1]);
+                }
+                else {
+                    alert(group[1])
+                }
+            },
+            error: function (data, status, e) {
+                alert(data+"//"+e);
+            }
+        })
+    }
+    function subform() {
+        if ($("#PicURL").val() != "" && $("#Name").val() != "")
+            document.getElementsByTagName("form")[0].submit();
+        else alert($("#PicURL").val() + "  " + $("#Name").val());
+    }
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/ajaxfileupload.js"></script>
+}

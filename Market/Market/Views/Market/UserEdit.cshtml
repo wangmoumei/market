@@ -1,0 +1,50 @@
+﻿@model Market.Models.User
+
+@{
+    ViewBag.Title = "修改个人资料";
+}
+
+@if (ViewBag.no != null) 
+{ 
+    @:<div id="user-no" style="text-align:center;padding:10px 0;">@ViewBag.no</div><script> setTimeout(function(){ $("#user-no").slideUp()},3000)</script>
+}
+<div id="user-edit">
+<div>用户：@Model.UserID</div>
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="editor-field">
+            <input type="text" id="Name" name="Name" placeholder="姓名" value="@Model.Name" />
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            <input type="text" id="Email" name="Email" placeholder="E-mail" value="@Model.Email"/>
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+
+        <div class="editor-field">
+            <input type="text" id="Address" name="Address" placeholder="地址" value="@Model.Address"/>
+            @Html.ValidationMessageFor(model => model.Address)
+        </div>
+
+        <div class="editor-field">
+            <input type="text" id="CellNum" name="CellNum" placeholder="手机号" value="@Model.CellNum" />
+            @Html.ValidationMessageFor(model => model.CellNum)
+        </div>
+
+        <div class="subbox">
+            <input class="sub" type="submit" value="保存" />
+        </div>
+}
+
+<div style="float:left;margin:20px 0 0 20px">
+    @Html.ActionLink("<<先不改了", "center")
+</div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

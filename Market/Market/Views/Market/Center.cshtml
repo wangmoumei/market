@@ -1,0 +1,60 @@
+﻿@model Market.Models.User
+
+@{
+    ViewBag.Title = "我就爱逛";
+}
+
+<div id="user-center">
+    <div class="head">
+        <div class="info">
+            <div class="imgbox"><img id="headimg" src="~/Content/user/@Model.HeadImg" /></div>
+            <script>document.getElementById("headimg").onerror = function () { this.src = "/Content/user/default.jpg" }</script>
+            <div>@Model.UserID</div>
+        </div>
+    </div>
+    <div class="user-info">
+        <div class="title">我的收货信息</div>
+        <ul class="infolist">
+            @if (Model.Name != null)
+            {
+                @:<li>收件人：@Model.Name</li>
+            } 
+            @if (Model.Email != null)
+            {
+                @:<li>电子邮箱：@Model.Email</li>
+            } 
+            @if(Model.CellNum != null)
+            {
+                @:<li>联系电话：@Model.CellNum</li>
+            } 
+            @if (Model.Address != null)
+            {
+                @:<li>收货地址：@Model.Address</li>
+            } 
+        </ul>
+        @if (Model.Email == null || Model.CellNum == null || Model.Address == null)
+        {
+            @:<a href="/market/UserEdit"><i class="icon-edit"></i> 我的资料不完整，去补充一下吧！</a>   
+        }
+
+    </div>
+    <div class="order-inf">
+        <div class="title">我的订单</div>
+        <ul class="orderlist">
+            @foreach( var item in (List<Market.Models.OrderHead>)ViewBag.order){
+                <a href="/market/order?OrderheadID=@item.OrderHeadID"><li>
+                    下单时间：@item.CreateTime
+
+                    <span style="float:right;color:#f00">付款：￥@item.Price</span>
+
+                </li></a>
+                
+            }
+
+        </ul>
+        @if (((List<Market.Models.OrderHead>)ViewBag.order).Count() == 0)
+        {
+            @:<a href="/market/search"><i class="icon-shop"></i> 还没有买过东西，去随便逛逛吧！</a>   
+        }
+    </div>
+</div>

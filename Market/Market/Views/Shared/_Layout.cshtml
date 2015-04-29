@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+    <script src="~/Scripts/iscroll.js"></script>
+    <link href="~/Content/icon/css/animation.css" rel="stylesheet" />
+    <link href="~/Content/icon/css/shop.css" rel="stylesheet" />
+    <link href="~/Content/css/messagebox.css" rel="stylesheet" />
+    <script src="~/Scripts/messagebox.js"></script>
+    @Styles.Render("~/Content/css")
+
+    @Scripts.Render("~/bundles/jquery")
+</head>
+<body>
+    <script>
+        var screenheight = document.documentElement.clientHeight || document.body.clientHeight;
+        var loading = document.getElementById("loading"); loading.style.position = "absolute"; loading.style.width = 100 + '%'; loading.style.top = screenheight / 2 + 'px'; loading.style.zIndex = 10;
+        window.onload = function () {
+            document.getElementById("loading").style.display = "none"
+        }
+        $("#loading").ajaxStart(function () {
+            $(this).show();
+        }).ajaxComplete(function () { $(this).hide(); });
+</script>
+    <div id="body" style="max-width:500px;margin:0 auto;position:relative;padding-bottom:70px;">
+<div id="header">
+    @ViewBag.Title
+</div>
+    @RenderBody()
+<div id="footer">
+    <ul class="list">
+        <a href="/market/index"><li>
+            <span><i class="icon-bag"></i>首页</span>
+        </li></a>
+        <a href="/market/search"><li>
+            <span><i class="icon-search"></i>逛一逛</span>
+        </li></a>
+        <a href="/market/cart"><li>
+            <span><i class="icon-basket"></i>购物车</span>
+        </li></a>
+        <a href="/market/Center"><li>
+            <span><i class="icon-shop"></i>我爱逛</span>
+        </li></a>
+    </ul>
+</div>
+</div>
+    
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,40 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>登陆-商城后台管理系统</title>
+    <link href="~/Content/css/loading.css" rel="stylesheet" />
+    <link href="~/Content/css/login.css" rel="stylesheet" />
+    <link href="~/Content/css/messagebox.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/messagebox.js"></script>
+    <script src="~/Scripts/admin.js" charset="utf-8"></script>
+</head>
+
+<body>
+<div id="loading"><div class="ajax-loader" style="margin:0 auto;"></div></div>
+<script>
+	var screenheight = document.documentElement.clientHeight || document.body.clientHeight;
+	var loading = document.getElementById("loading");loading.style.position = "absolute";loading.style.width = 100+'%';loading.style.top = screenheight/2 + 'px';
+</script>
+
+<div id="main">
+    <div id="loginbox">
+    <div class="title">Login</div>
+        <div class="loginfo">
+        	<input type="text" id="UserID" name="UserID" placeholder="账号">
+        </div>
+        <div class="loginfo">
+        	<input type="password" id="Password" name="Password" placeholder="密码">
+        </div>
+        <div class="btnbox">
+        	<input type="submit" id="sub" value="Sign Up!">
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

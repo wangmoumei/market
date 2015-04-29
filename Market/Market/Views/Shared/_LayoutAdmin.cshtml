@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <script src="~/Scripts/iscroll.js"></script>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <link href="~/Content/css/adminstyle.css" rel="stylesheet" />
+    <link href="~/Content/icon/css/animation.css" rel="stylesheet" />
+    <link href="~/Content/icon/css/shop.css" rel="stylesheet" />
+    <script src="~/Scripts/messagebox.js"></script>
+    <link href="~/Content/css/messagebox.css" rel="stylesheet" />
+    <!--[if IE 7]><link href="~/Content/icon/css/shop-ie7.css" rel="stylesheet" /><![endif]-->
+</head>
+<body>
+<div id="loading"><div class="ajax-loader" style="margin:0 auto;"></div></div>
+<script>
+    var screenheight = document.documentElement.clientHeight || document.body.clientHeight;
+    var loading = document.getElementById("loading"); loading.style.position = "absolute"; loading.style.width = 100 + '%'; loading.style.top = screenheight / 2 + 'px'; loading.style.zIndex = 10;
+    window.onload = function () {
+        document.getElementById("loading").style.display = "none"
+    }
+</script>
+    <div class="body">
+    @RenderBody()
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

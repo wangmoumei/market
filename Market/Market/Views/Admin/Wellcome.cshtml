@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Wellcome";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div style="padding-left:20px;">
+<h2>欢迎！</h2>
+<h3>现在开始管理商城！</h3>
+<div style="margin-left:20px;margin-top:20px;padding:20px;width:400px;border:1px solid #ddd;">
+    <div style="padding:10px;">
+        首页广告图 
+        <a id="banner-edit" style="font-size:20px;"><i class="icon-pencil-squared"></i></a></div>
+        <div id="imgbox"><img src="~/Content/img/@ViewBag.banner" width="400px"/></div>
+        <input type="file" name="file" id="file" style="display:none" />
+    </div>
+<ul>
+    <li></li>
+
+</ul>
+</div>
+<script>
+    document.getElementById("banner-edit").onclick = function () {
+        document.getElementById("file").click();
+    };
+    document.getElementById("file").onchange = function () {
+        $.ajaxFileUpload({
+            url: '/admin/Banner',//后台处理的action
+            secureuri: false,
+            fileElementId: 'file',//上传的控件名
+            dataType: 'text',
+            success: function (data, status) {
+                var group = data.split(",");
+                if (group[0]) {
+                    document.getElementById("imgbox").innerHTML = '<img src="/Content/img/' + group[1] + '" width="400px"/>';
+                    messagebox("修改成功");
+                }
+                else {
+                    messagebox(group[1])
+                }
+            },
+            error: function (data, status, e) {
+                alert(data + "//" + e);
+            }
+        })
+    }
+
+
+
+</script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/ajaxfileupload.js"></script>
+}

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Market.Models.Item>
+
+@{
+    ViewBag.Title = "商品管理";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div style="padding:10px;">
+    @Html.ActionLink("添加商品", "ItemCreate")
+    @if (ViewBag.page2 !=null)
+    {
+        @:<a href="/admin/itemlist?page=@ViewBag.page2"><i class="icon-fast-bw"></i></a>
+    }
+    @if (ViewBag.page1 != null)
+    {
+        @:<a href="/admin/itemlist?page=@ViewBag.page1"><i class="icon-fast-fw"></i></a>
+        
+    }
+</div>
+<div id="AdminItem">
+<ul class="item-list">
+    @foreach (var item in Model) {
+    <li>
+        <div class="cate">
+            @Html.DisplayFor(modelItem => item.Category.Name)
+
+            <a class="item-edi" href="/Admin/ItemEdit?id=@item.ItemID"><i class="icon-pencil-squared"></i></a>
+            <a class="item-del" href="/Admin/ItemDelete?id=@item.ItemID"><i class="icon-trash"></i></a>
+        </div>
+        <div class="imgbox">
+            
+            <img src="~/Content/item/@Html.DisplayFor(modelItem => item.CoverImg)" />
+        </div>
+        <div class="title">
+            @Html.DisplayFor(modelItem => item.Title)
+
+        </div>
+        <div class="content">
+            @Html.DisplayFor(modelItem => item.Content)
+
+        </div>
+        <div class="price">
+            <span>￥@Html.DisplayFor(modelItem => item.Price)</span>
+            <del>@Html.DisplayFor(modelItem => item.OldPrice)</del>
+        </div>
+        <div class="count">
+            <span>已售</span>@Html.DisplayFor(modelItem => item.Sellnum)
+            <span>库存:</span>@Html.DisplayFor(modelItem => item.Stock)
+        </div>
+        <div class="text">
+            @Html.DisplayFor(modelItem => item.Text)
+
+        </div>
+        <div class="creatim">
+
+            @Html.DisplayFor(modelItem => item.CreateTime)
+        </div>
+    </li>
+
+    }
+</ul>
+</div>

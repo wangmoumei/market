@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Market.Models.OrderBody>
+
+@{
+    ViewBag.Title = "有钱就任性";
+}
+<div id="main">
+    @if (ViewBag.neworder != null) 
+{ 
+    @:<div id="user-no" style="text-align:center;padding:10px 0;">@ViewBag.neworder</div><script> setTimeout(function () { $("#user-no").slideUp() }, 3000)</script>
+}
+<ul class="itemlist">
+        @foreach (var item in Model) {
+        <li>
+            <div class="leftbox">
+                <img src="~/Content/item/@item.Item.CoverImg" />
+			</div>
+			<div class="rightbox">
+				<p class="title">@item.Item.Title</p>
+				<p class="content">@item.Item.Content</p>
+				<p class="price">
+                    单价￥<span>@item.Item.Price</span> × 
+                    <span class="cart-count">
+                        <i class="item-num">@item.Count</i>
+                    </span> 
+				</p>
+				<p class="selling" title="@item.Count" id="@item.Item.Price">总价</p>
+			</div>
+        </li>
+            
+        }
+</ul>
+</div>
+<div class="cart-sumbox">
+    合计 
+    <span id="sum" style="font-size:18px;float:right;color:#f00"></span>
+</div>
+<script>
+        var sum = 0;
+        var pricelst = document.getElementsByClassName("selling");
+        for (var i = 0; i < pricelst.length ; i++) {
+            var s = parseFloat(pricelst[i].title) * parseFloat(pricelst[i].id);
+            pricelst[i].innerHTML = "￥<span class='sum'>" + s + "</span>";
+            sum += s;
+        }
+        document.getElementById("sum").innerHTML = "￥" + sum;
+
+</script>

@@ -1,0 +1,160 @@
+﻿@model IEnumerable<Market.Models.Cart>
+
+@{
+    ViewBag.Title = "我的购物车";
+}
+<div id="main">
+<ul class="itemlist">
+        @foreach (var item in Model) {
+        <li>
+            <div class="leftbox">
+                <img src="~/Content/item/@item.Item.CoverImg" />
+			</div>
+			<div class="rightbox">
+				<p class="title">@item.Item.Title</p>
+				<p class="content">@item.Item.Content</p>
+				<p class="price">
+                    单价￥<span>@item.Item.Price</span> × 
+                    <span class="cart-count">
+                        <i class="mini" title ="@item.ItemID"><i class="icon-left-open"></i></i>
+                        <i class="item-num">@item.Count</i>
+                        <i class="plus" title ="@item.ItemID"><i class="icon-right-open"></i></i>
+                    </span> 
+				</p>
+				<p class="selling" title="@item.Count" id="@item.Item.Price">总价</p>
+			</div>
+            <a class="del" title ="@item.ItemID"><i class="icon-trash"></i></a>
+        </li>
+            
+        }
+</ul>
+</div>
+<div class="cart-sumbox">
+    合计 
+    <a href="/market/OrderCteate" class="btn">结算</a>
+    <span id="sum" style="font-size:18px;float:right;color:#f00"></span>
+</div>
+<script>
+    var pluslist = document.getElementsByClassName("plus");
+    for (var i = 0 ; i < pluslist.length; i++) {
+        pluslist[i].onclick = function () {
+            var box = $(this).parents(".cart-count").find(".item-num");
+            $.ajax({
+                url: "/market/CartPlus",
+                type: "POST",
+                dataType: "json",
+                data: "itemid=" + this.title,
+                success: function (data) {
+                    if (data == 1) {
+                        var mmm = parseInt(box.html()) ;
+                        box.html(mmm+1);
+                        box.parents(".rightbox").find(".selling").attr("title", mmm + 1);
+                        prisum();
+                    } else if (data == 2) {
+                        confirmbox("客户端未响应，请刷新页面", function () { location.reload(); });
+                    } else if (data == 3) {
+                        messagebox("库存不够啦(ﾉ￣д￣)ﾉ");
+                    } else if (data == 4) {
+                        confirmbox("还没登陆Σ(▼□▼メ)", function () {
+                            window.location.href = "/market/login?returnurl=/market/cart";
+                        });
+                    } else
+                        alertbox("请求失败⊙︿⊙");
+                },
+                timeout: 10000,
+                error: function (data) {
+                    alertbox("请求超时⊙︿⊙")
+                }
+
+            })
+        }
+    }
+    var minilist = document.getElementsByClassName("mini");
+    for (var i = 0 ; i < minilist.length; i++) {
+        minilist[i].onclick = function () {
+            var box = $(this).parents(".cart-count").find(".item-num");
+            if(parseInt(box.html())>1)
+            $.ajax({
+                url: "/market/Cartmini",
+                type: "POST",
+                dataType: "json",
+                data: "itemid=" + this.title,
+                success: function (data) {
+                    if (data == 1) {
+                        var mmm = parseInt(box.html());
+                        box.html(mmm-1);
+                        box.parents(".rightbox").find(".selling").attr("title", mmm - 1);
+                        prisum();
+                    } else if (data == 2) {
+                        confirmbox("客户端未响应，请刷新页面", function () { location.reload(); });
+                    } else if (data == 3) {
+                        messagebox("库存不够啦(ﾉ￣д￣)ﾉ");
+                    } else if (data == 4) {
+                        confirmbox("还没登陆Σ(▼□▼メ)", function () {
+                            window.location.href = "/market/login?returnurl=/market/cart";
+                        });
+                    } else
+                        alertbox("请求失败⊙︿⊙");
+                },
+                timeout: 10000,
+                error: function (data) {
+                    alertbox("请求超时⊙︿⊙")
+                }
+            })
+        }
+    }
+    var dellist = document.getElementsByClassName("del");
+    for (var i = 0 ; i < dellist.length; i++) {
+        dellist[i].onclick = function () {
+            var box = $(this);
+            confirmbox("真的要删除吗？", function () {
+                $.ajax({
+                    url: "/market/CartDelete",
+                    type: "POST",
+                    dataType: "json",
+                    data: "itemid=" + box.attr("title"),
+                    success: function (data) {
+                        if (data == 1) {
+                            box.parents("li").hide().find(".selling").attr("title", 0);
+                            prisum();
+                        } else if (data == 2) {
+                            confirmbox("客户端未响应，请刷新页面", function () { location.reload(); });
+                        } else if (data == 3) {
+                            messagebox("库存不够啦(ﾉ￣д￣)ﾉ");
+                        } else if (data == 4) {
+                            confirmbox("还没登陆Σ(▼□▼メ)", function () {
+                                window.location.href = "/market/login?returnurl=/market/cart";
+                            });
+                        } else
+                            alertbox("请求失败⊙︿⊙");
+                    },
+                    timeout: 10000,
+                    error: function (data) {
+                        alertbox("请求超时⊙︿⊙")
+                    }
+
+                })
+            })
+        }
+    }
+
+    prisum();
+    function prisum() {
+        var sum = 0;
+        var pricelst = document.getElementsByClassName("selling");
+        for (var i = 0; i < pricelst.length ; i++) {
+            var s = parseFloat(pricelst[i].title) * parseFloat(pricelst[i].id);
+            pricelst[i].innerHTML = "￥<span class='sum'>" + s + "</span>";
+            sum += s;
+        }
+        if (sum == 0) {
+            document.getElementById("main").innerHTML = "<div id='null' style='text-align:center;color:#ccc;margin-top:40px;'>╮(╯▽╰)╭<br/>购物车空空如也</div>"
+            $(".cart-sumbox").hide();
+        } else {
+            $("#null").remove();
+            $(".cart-sumbox").show();
+        }
+        document.getElementById("sum").innerHTML = "￥" + sum;
+    }
+</script>
+

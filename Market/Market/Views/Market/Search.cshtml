@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Market.Models.Item>
+@{
+    ViewBag.Title = "随便逛逛";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="main">
+    @using(Html.BeginForm()){
+    <div id="searchbox">
+        @if (ViewBag.search == null)
+        {
+            @:<div class="index"><input type="text" name="search" id="search"/></div>
+            @:<div class="subbox"><input type="submit" class="sub" value="找找" /><input id="hungry" type="button" class="sub" value="随便逛逛" /></div>
+            @:<ul class="hotword"><li>特价</li><li>优惠</li><li>折扣</li><li>半价</li><li>电影</li><li>快餐</li><li>披萨</li><li>机票</li><li>火车票</li></ul>
+            @:
+        }
+        else if (Model.Count() == 0)
+        {
+            @:<div style="padding-top:30px">╮(╯▽╰)╭<br />没有找到任何东西</div>
+            @:<div class="index"><input type="text" name="search" id="search" value ="@ViewBag.search" /></div>
+            @:<div class="subbox"><input type="submit" class="sub" value="继续找" /></div>
+            @:<ul class="hotword"><li>特价</li><li>优惠</li><li>折扣</li><li>半价</li><li>电影</li><li>快餐</li><li>披萨</li><li>机票</li><li>火车票</li></ul>
+            
+        }
+        else
+        {
+            @:<div class="result"><input type="text" name="search" id="search" value ="@ViewBag.search" /><input class="sub" type="submit" value="再找找" /></div>
+        }
+        <script>
+            $("#hungry").click(function () { window.location.href = "/market/search?search=随便逛逛" })
+            $(".hotword li").click(function () { $("#search").val(this.innerHTML) });
+        </script>
+    </div>
+    }
+    <ul class="itemlist">
+        @foreach (var item in Model)
+        {
+        <li>
+            <div class="leftbox">
+                <img src="~/Content/item/@item.CoverImg" />
+			</div>
+			<div class="rightbox">
+				<p class="title">@item.Title</p>
+				<p class="content">@item.Content</p>
+				<p class="price"><span>@item.Price</span>元    <del>  @item.OldPrice</del> </p>
+				<span class="selling">已售 @item.Sellnum</span>
+			</div>
+            <a class="cart" title ="@item.ItemID"><i class="icon-basket"></i></a>
+        </li>
+        }
+    </ul>
+</div>
+<script>
+    var cartlst = document.getElementsByClassName("cart");
+    for (var i = 0; i < cartlst.length; i++) {
+        cartlst[i].onclick = function () {
+            $.ajax({
+                url: "/market/AddCart",
+                type: "POST",
+                dataType: "json",
+                data: "itemid=" + this.title,
+                success: function (data) {
+                    if (data == 1) {
+                        messagebox("加入了购物车ヘ(￣ω￣ヘ)");
+                    } else if (data == 2) {
+                        messagebox("又买了一个！(●♡∀♡)");
+                    } else if (data == 3) {
+                        messagebox("库存不够啦(ﾉ￣д￣)ﾉ");
+                    } else if (data == 4) {
+                        confirmbox("还没登陆Σ(▼□▼メ)", function () {
+                            window.location.href = "/market/login?returnurl=/market/index";
+                        });
+                    } else
+                        alertbox("请求失败⊙︿⊙");
+                },
+                timeout: 10000,
+                error: function (data) {
+                    alertbox("请求超时")
+                }
+
+            })
+        }
+    }
+
+
+</script>
+

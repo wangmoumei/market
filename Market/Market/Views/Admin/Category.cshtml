@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Market.Models.Category>
+
+@{
+    ViewBag.Title = "类别管理";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<ul id="NoticeBox">
+        <li class="success" @if(ViewBag.success != null)
+        {
+            @:style="display:block"
+        }
+        ><i class="icon-ok"></i><span>成功</span></li>
+        <li class="worning" @if (ViewBag.worning != null)
+        {
+            @:style="display:block"
+        }><i class="icon-info"></i><span>警告</span></li>
+        <li class="error" @if (ViewBag.error != null)
+        {
+            @:style="display:block"
+        }><i class="icon-cancel"></i><span>错误</span></li>
+</ul>
+<script>    setTimeout(function () { $("#NoticeBox li").slideUp() }, 2000);</script>
+<div id="category">
+    <ul class="cat-list">
+        @foreach (var item in Model) {
+        <li><input style="display:none" type="text" value="@item.CategoryID" class="catid" />
+            <div class="imgbox">
+                <img src="~/Content/category/@Html.DisplayFor(modelItem => item.PicURL)" />
+            </div>
+            <div class="cat-name">@Html.DisplayFor(modelItem => item.Name)</div>
+            <div class="cat-butbox">
+                <a class="cat-edi"><i class="icon-pencil-squared"></i></a>
+                <a class="cat-del" href="/Admin/CategoryDelete?id=@item.CategoryID"><i class="icon-trash"></i></a>
+            </div>
+        </li>
+        }
+        <li><a href="/admin/CategoryCreate">
+            <div class="cat-add">
+                <i class="icon-plus"></i>
+            </div></a>
+        </li>
+    </ul>
+
+</div>
+<script>
+    $(".cat-edi").click(function () {
+        var pa = this.parentNode;//pa.style.display = "none";
+        var box = $(this).parents("li").find(".cat-name");
+        var old = box.html();
+        box.html("<input type='text' name='Name' id='Name' value=" + old + " />");
+        document.getElementById("Name").focus();
+        document.getElementById("Name").onblur = function () {
+            var newcat = this.value;
+            if (newcat == old) {
+                box.html(old);
+                $("#NoticeBox .worning span").html("未更改");
+                $("#NoticeBox .worning").slideDown();
+                setTimeout(function () { $("#NoticeBox .worning").slideUp() }, 2000);
+            }
+            else
+
+                $.ajax({
+                    url: "/Admin/CategoryEdit",
+                    type: "POST",
+                    dataType: "json",
+                    data: "ID=" + box.parents("li").find(".catid").val() + '&name=' + newcat,
+                    success: function (data) {
+                        if (data == 1) {
+                            box.html(newcat);
+                            $("#NoticeBox .success span").html("编辑成功！");
+                            $("#NoticeBox .success").slideDown();
+                            setTimeout(function () { $("#NoticeBox .success").slideUp() }, 2000);
+                        }
+                        else {
+                            $("#NoticeBox .error span").html("失败啦");
+                            $("#NoticeBox .error").slideDown();
+                            setTimeout(function () { $("#NoticeBox .error").slideUp() }, 2000);
+                        }
+
+                    },
+                    timeout: 10000,
+                    error: function (data) {
+
+                    }
+
+                });
+            $(this).remove();
+        }
+    });
+
+</script>
