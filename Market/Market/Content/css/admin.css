@@ -1,0 +1,135 @@
+﻿body.body{background-image:url(../img/bk2.jpg);background-size:2000px;background-repeat:no-repeat;background-position:0 -300px;}
+        *{padding:0;margin:0;}
+body
+{
+    background-color:#edeff3
+}
+        .adbk{background-color:#2eb398}
+        .adcl{color:#2caa92}
+        li{list-style:none}
+#header
+{
+    color:#fff;
+    background-color:#3e454d;
+    height:30px;
+    line-height:30px;
+    font-size:16px;
+    padding-left:20px;
+    margin-bottom:40px;
+}
+#main,#Menu
+{
+    padding:0 40px;
+}
+    #frame{
+        position:relative;
+        width:100%;
+        min-width:1100px;
+        border:none;
+        background-color:#fff;
+        box-shadow:1px 2px 1px 1px rgba(111,111,111,.1);
+        animation: showOn 1s;
+        -moz-animation: showOn 1s;
+        -webkit-animation: showOn 1s;
+        -o-animation: showOn 1s;
+    }
+    .adminlist{
+        width:600px;
+        display:-webkit-box;display:-moz-box;display:-ms-box;
+        display:flex;
+        list-style:none;
+    }
+    .adminlist li{
+        position:relative;
+        -webkit-box-flex:1;-moz-box-flex:1;-ms-box-flex:1;
+        flex:1;
+        
+    }
+    .adminlist li a{
+        color:#fff;
+        display:block;
+        text-decoration:none;
+        text-align:center;
+        padding:10px 0;
+        transition:  color .5s linear, background-color .5s linear;
+        height:20px;
+        line-height:20px;
+    }
+    .adminlist li a i{
+        position:relative;
+        left:-5px;
+        top:2px;
+        font-size:22px
+    }
+        .adminlist li:nth-of-type(1) a
+        {
+            background:#1fbba6;
+        }
+        .adminlist li:nth-of-type(2) a
+        {
+            background:#28cbb5;
+        }
+        .adminlist li:nth-of-type(3) a
+        {
+            background:#39dec8;
+        }
+        .adminlist li:nth-of-type(4) a
+        {
+            background:#56eed9;
+        }
+        .adminlist li:nth-of-type(5) a
+        {
+            background:#74f2e1;
+        }
+        .adminlist li:nth-of-type(6) a
+        {
+            background:#56eed9;
+        }
+        .adminlist li.active a
+        {
+            position:absolute;
+            top:-5px;
+            padding-top:10px;
+            padding-bottom:20px;
+            width:100%;
+            background:#fff;
+            color:#b7b7b7;
+            box-shadow:0 0 1px 1px rgba(111,111,111,.1);
+            animation: showActive 1s;
+            -moz-animation: showActive 1s;
+            -webkit-animation: showActive 1s;
+            -o-animation: showActive 1s;
+        }
+            @-webkit-keyframes showActive {
+            from { opacity: 0; top:40px; }
+            to   { opacity: 1; top:-5px;}
+            }
+            @-moz-keyframes showActive {
+                from { opacity: 0; top:40px; }
+                to   { opacity: 1; top:-5px;}
+            }
+            @-ms-keyframes showActive {
+                from { opacity: 0; top:40px; }
+                to   { opacity: 1; top:-5px;}
+            }
+            @-o-keyframes showActive {
+                from { opacity: 0; top:40px; }
+                to   { opacity: 1; top:-10px;}
+            }
+
+            @-webkit-keyframes showOn {
+            from { opacity: 0;}
+            to   { opacity: 1;}
+            }
+            @-moz-keyframes showOn {
+                from { opacity: 0;}
+                to   { opacity: 1;}
+            }
+            @-ms-keyframes showOn {
+                from { opacity: 0;}
+                to   { opacity: 1;}
+            }
+            @-o-keyframes showOn {
+                from { opacity: 0;}
+                to   { opacity: 1;}
+            }
